@@ -1,0 +1,231 @@
+/***********************************************************
+* A platformer game
+* (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
+* 
+* This program is free software: you can redistribute it
+* and/or modify it under the terms of the GNU General
+* Public License as published by the Free Software
+* Foundation, either version 3 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be
+* useful, but WITHOUT ANY WARRANTY; without even the
+* implied warranty of MERCHANTABILITY or FITNESS FOR A
+* PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public
+* License along with this program.  If not, see
+* <https://www.gnu.org/licenses/>.
+**********************************************************/
+
+#include "ldtk.h"
+
+LDtkLevel *ldtk_levels[LDTK_NUM_LEVELS] =
+{
+    <%- j['levels'].each do|lev| -%>
+        &ldtk_<%= lev['iid'].c_ident %>,
+    <%- end -%>
+};
+
+LDtkTileset *ldtk_tilesets[LDTK_NUM_TILESETS] =
+{
+    <%- j['defs']['tilesets'].each do|t| -%>
+        &ldtk_tileset_<%= t['uid'] %>,
+    <%- end -%>
+};
+
+<%- j['defs']['tilesets'].each do|t| -%>
+    LDtkTileset ldtk_tileset_<%= t['uid'] %> =
+    {
+        .identifier = "<%= t['identifier'] %>",
+        .texture = &<%= t['identifier'] %>_texture,
+        .uid = <%= t['uid'] %>,
+        .tile_size = { <%= t['tileGridSize'] %>, <%= t['tileGridSize'] %> },
+        .texture_size = { <%= t['pxWid'] %>, <%= t['pxHei'] %> },
+        .padding = <%= t['padding'] %>,
+        .spacing = <%= t['spacing'] %>,
+    };
+<%- end -%>
+
+<%- j['levels'].each do|lev| -%>
+    LDtkLevel ldtk_<%= lev['iid'].c_ident %> =
+    {
+        .identifier = "<%= lev['identifier'] %>",
+        .world_position = { <%= lev['worldX'] %>, <%= lev['worldY'] %> },
+        .dimensions = { <%= lev['pxWid'] %>, <%= lev['pxHei'] %> },
+        .background_color = { <%= lev['__bgColor'].hex_to_rgb.join(', ') %>, 255 },
+        .num_fields = <%= lev['fieldInstances'].length() %>,
+        .fields = &ldtk_<%= lev['iid'].c_ident %>_fields[0],
+        .num_layers = <%= lev['layerInstances'].length() %>,
+        .layers = &ldtk_<%= lev['iid'].c_ident %>_layers[0],
+    };
+
+    LDtkLayer *ldtk_<%= lev['iid'].c_ident %>_layers[LDTK_NUM_LAYERS] =
+    {
+        <%- lev['layerInstances'].each do|lay| -%>
+            &ldtk_<%= lay['iid'].c_ident %>,
+        <%- end -%>
+    };
+
+    LDtkField ldtk_<%= lev['iid'].c_ident %>_fields[LDTK_NUM_LEVEL_FIELDS] =
+    {
+        <%- lev['fieldInstances'].each do|f| -%>
+            {
+                .identifier = "<%= f['__identifier'] %>",
+                .type = LDTK_FIELD_TYPE_<%= f['__type'].gsub(/[<>\.]/, '') %>,
+                <%- if f['__type'].start_with?('Array<') -%>
+                    .value =
+                    {
+                        .length = <%= f['__value'].length() %>,
+                        <%- if f['__value'].length() > 0 -%>
+                            .ptr = &ldtk_<%= lev['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[0],
+                        <%- end -%>
+                    },
+                <%- else -%>
+                    .value =
+                    {
+                        .length = 1,
+                        .ptr = &ldtk_<%= lev['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[0],
+                    },
+                <%- end -%>
+            },
+        <%- end -%>
+    };
+
+    <%- lev['layerInstances'].each do|lay| %>
+        LDtkLayer ldtk_<%= lay['iid'].c_ident %> =
+        {
+            .identifier = "<%= lay['__identifier'] %>",
+            .level = &ldtk_<%= lev['iid'].c_ident %>,
+            .type = LDTK_LAYER_TYPE_<%= lay['__type'] %>,
+            .size = { <%= lay['__cWid'] %>, <%= lay['__cHei'] %> },
+            .grid_size = <%= lay['__gridSize'] %>,
+            .opacity = <%= lay['__opacity'] %>,
+            .offset = { <%= lay['__pxTotalOffsetX'] %>, <%= lay['__pxTotalOffsetY'] %> },
+            <%- case lay['__type'] -%>
+            <%- when 'Entities' -%>
+                .num_entities = <%= lay['entityInstances'].length() %>,
+                .entities = &ldtk_<%= lay['iid'].c_ident %>_entities[0],
+            <%- when 'IntGrid' -%>
+                .grid = &ldtk_<%= lay['iid'].c_ident %>_intgrid[0],
+            <%- when 'Tiles', 'AutoLayer' -%>
+                .tileset = &ldtk_tileset_<%= lay['__tilesetDefUid'] %>,
+                .num_tiles = <%= (lay['gridTiles'] + lay['autoLayerTiles']).length() %>,
+                .tiles = &ldtk_<%= lay['iid'].c_ident %>_tiles[0],
+            <%- else -%>
+                <%- STDERR.puts "Unknown layer type \#{lay['__type']}" -%>
+            <%- end -%>
+        };
+
+        <%- if lay['entityInstances'].length() != 0 -%>
+            LDtkEntity *ldtk_<%= lay['iid'].c_ident %>_entities[<%= lay['entityInstances'].length() %>] =
+            {
+                <%- lay['entityInstances'].each do|e| -%>
+                    &ldtk_<%= e['iid'].c_ident %>,
+                <%- end -%>
+            };
+
+            <%- lay['entityInstances'].each do|e| -%>
+                LDtkEntity ldtk_<%= e['iid'].c_ident %> =
+                {
+                    .type = LDTK_ENTITY_<%= e['__identifier'].c_ident %>,
+                    .layer = &ldtk_<%= lay['iid'].c_ident %>,
+                    .grid = { <%= e['__grid'][0] %>, <%= e['__grid'][1] %> },
+                    .pivot = { <%= e['__pivot'][0] %>, <%= e['__pivot'][1] %> },
+                    .width = <%= e['width'] %>,
+                    .height = <%= e['height'] %>,
+                    .px = { <%= e['px'][0] %>, <%= e['px'][1] %> },
+                    .num_fields = LDTK_ENTITY_<%= e['__identifier'] %>_NUM_FIELDS,
+                    <%- if e['fieldInstances'].length() != 0 -%>
+                        .fields = &ldtk_<%= e['iid'].c_ident %>_fields[0],
+                    <%- end -%>
+                };
+
+                <%- if e['fieldInstances'].length() != 0 -%>
+                    LDtkField ldtk_<%= e['iid'].c_ident %>_fields[LDTK_ENTITY_<%= e['__identifier'].c_ident %>_NUM_FIELDS] =
+                    {
+                        <%- e['fieldInstances'].each do|f| -%>
+                            {
+                                .identifier = "<%= f['__identifier'] %>",
+                                .type = LDTK_FIELD_TYPE_<%= f['__type'].gsub(/[<>\.]/, '') %>,
+                                <%- if f['__type'].start_with?('Array<') -%>
+                                    .value =
+                                    {
+                                        .length = <%= f['__value'].length() %>,
+                                        <%- if f['__value'].length() > 0 -%>
+                                            .ptr = &ldtk_<%= e['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[0],
+                                        <%- end -%>
+                                    },
+                                <%- else -%>
+                                    .value =
+                                    {
+                                        .length = 1,
+                                        .ptr = &ldtk_<%= e['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[0],
+                                    },
+                                <%- end -%>
+                            },
+                        <%- end -%>
+                    };
+                <%- end -%>
+
+            <%- end -%>
+        <%- end -%>
+
+        <%- if lay['intGridCsv'].length() != 0 -%>
+            int ldtk_<%= lay['iid'].c_ident %>_intgrid[<%= lay['intGridCsv'].length() %>] =
+            {
+                <%- lay['intGridCsv'].each_slice(10) do|slice| -%>
+                    <%= slice.map{|i| i.to_s.rjust(3, ' ') }.join(', ') %>,
+                <%- end -%>
+            };
+        <%- end -%>
+
+        <%- if (lay['gridTiles'] + lay['autoLayerTiles']).length() != 0 -%>
+            LDtkTile ldtk_<%= lay['iid'].c_ident %>_tiles[<%= (lay['gridTiles'] + lay['autoLayerTiles']).length() %>] =
+            {
+                <%- (lay['gridTiles'] + lay['autoLayerTiles']).each do|t| -%>
+                    {<%-
+                    -%>.src = { <%= t['src'][0] %>, <%= t['src'][1] %>, <%= lay['__gridSize'] %>, <%= lay['__gridSize'] %> }, <%-
+                    -%>.dst = { <%= t['px'][0] %>, <%= t['px'][1] %>, <%= lay['__gridSize'] %>, <%= lay['__gridSize'] %> }, <%-
+                    -%>.flip = <%= t['f'] %> <%-
+                    -%>},
+                <%- end -%>
+            };
+        <%- end -%>
+    <%- end -%>
+<%- end -%>
+
+<%- field_holders =
+        j['levels']
+            .select{|l| l['fieldInstances'].length() > 0 } +
+        j['levels']
+            .map{|l| l['layerInstances'] }
+            .flatten
+            .select{|l| l['entityInstances'].length() > 0}
+            .map{|l| l['entityInstances'] }
+            .flatten
+-%>
+
+<%- field_holders.each do|fh| -%>
+    <%- fh['fieldInstances'].each do|f| -%>
+        <%- values = f['__value'].kind_of?(Array) ? f['__value'] : [f['__value']] -%>
+        <%- type = f['__type'] =~ /^Array<([^>]+)>$/ ? $1 : f['__type'] -%>
+        <%- unless values.empty? -%>
+            <%= type.ldtk_type_to_c_type %> ldtk_<%= fh['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[<%= values.length() %>] =
+            {
+                <%- case type -%>
+                <%- when 'Int' -%><%= values.join(", ") %>
+                <%- when 'Float' -%><%= values.join(", ") %>
+                <%- when 'Bool' -%><%= values.map{|v| v ? "SDL_TRUE" : "SDL_FALSE" }.join(', ') %>
+                <%- when 'String' -%><%= values.map{|v| v ? %Q{"#{v}"} : %q{""} }.join(', ') %>
+                <%- when 'Color' -%><%= values.map{|v| v ? "{ #{v.hex_to_rgb.join(', ')}, 255 }" : "{0, 0, 0, 255}" }.join(', ') %>
+                <%- when 'Tile' -%><%= values.map{|v| v ? "{ &ldtk_tileset_#{v['tilesetUid']}, { #{v['x']}, #{v['y']}, #{v['w']}, #{v['h']} } }" : "{0}" }.join(', ') %>
+                <%- when 'EntityRef' -%><%= values.map{|v| v ? "&ldtk_#{v['entityIid'].c_ident}" : "NULL" }.join(', ') %>
+                <%- when 'Point' -%><%= values.map{|v| v ? "{ #{v['cx']}, #{v['cy']} }" : "{0}" }.join(', ' ) %>
+                <%- when /^LocalEnum\.(.+)$/ -%><%= values.map{|v| "LDTK_ENUM_#{$1}_#{v or "NULL"}"}.join(', ') %>
+                <%- end -%>
+            };
+        <%- end -%>
+    <%- end -%>
+<%- end -%>

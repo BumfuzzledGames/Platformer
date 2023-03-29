@@ -1,0 +1,116 @@
+/***********************************************************
+* A platformer game
+* (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
+* 
+* This program is free software: you can redistribute it
+* and/or modify it under the terms of the GNU General
+* Public License as published by the Free Software
+* Foundation, either version 3 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be
+* useful, but WITHOUT ANY WARRANTY; without even the
+* implied warranty of MERCHANTABILITY or FITNESS FOR A
+* PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public
+* License along with this program.  If not, see
+* <https://www.gnu.org/licenses/>.
+**********************************************************/
+
+#ifndef LDTK_WORLD_ENUM_H
+#define LDTK_WORLD_ENUM_H
+ 
+#include "ldtk_forward.h"
+
+<%# Output a list of entity types, such as LDKT_ENTITY_MenuItem -%>
+// Entity types
+typedef enum
+{
+<%- j['defs']['entities'].each do|e| -%>
+    LDTK_ENTITY_<%= e['identifier'].c_ident %>,
+<%- end -%>
+    LDTK_NUM_ENTITY_TYPES
+} LDtkEntityType;
+
+
+// Enums
+#define LDTK_ENUM_TYPES \
+<%- j['defs']['enums'].each do|e| -%>
+    LDTK_FIELD_TYPE_LocalEnum<%= e['identifier'].c_ident %>, \
+    LDTK_FIELD_TYPE_ArrayLocalEnum<%= e['identifier'].c_ident %>, \
+<%- end -%>
+
+<%- j['defs']['enums'].each do|e| -%>
+    typedef enum
+    {
+            LDTK_ENUM_<%= e['identifier'].c_ident %>_NULL,
+            <%- e['values'].each do|v| -%>
+            LDTK_ENUM_<%= e['identifier'].c_ident %>_<%= v['id'].c_ident %>,
+        <%- end -%>
+    } LDtkLocalEnum<%= e['identifier'].c_ident %>;
+<%- end -%>
+
+<%# Output a list of field indices for the levels. Each level
+    has the same set of fields, so these indices can be used
+    instead of searching for a field with a certain name or type.
+    Also, since the types of the fields are known ahead of time,
+    assumptions can be made about the types in the C code. -%>
+// Level field indices
+typedef enum
+{
+<%- j['defs']['levelFields'].each do|f| -%>
+    LDTK_LEVEL_FIELD_<%= f['identifier'].c_ident %>,
+<%- end -%>
+    LDTK_NUM_LEVEL_FIELDS,
+} LDtkLevelFieldIndex;
+
+<%# Output a list of field indices for each entity type. These
+    will look like LDTK_ENTITY_EntityType_FIELD_FieldIdentifier.
+    All entities of the same type have the same fields, so again,
+    a lot of assumptions can be made about the presence and type
+    of fields. -%>
+// Entity field indices
+<%- j['defs']['entities'].each do|e| -%>
+enum
+{
+    <%- e['fieldDefs'].each do|f| -%>
+    LDTK_ENTITY_<%= e['identifier'].c_ident %>_FIELD_<%= f['identifier'].c_ident %>,
+    <%- end -%>
+    LDTK_ENTITY_<%= e['identifier'].c_ident %>_NUM_FIELDS
+};
+<%- end -%>
+
+<%# Output a list of layers. All levels have the same set of layers,
+    so these can be used to index the layers of any level -%>
+// Layers
+enum
+{
+    <%- j['defs']['layers'].each do|l| -%>
+    LDTK_LAYER_<%= l['identifier'].c_ident %>,
+    <%- end -%>
+    LDTK_NUM_LAYERS
+};
+
+<%# Output a list of tilesets -%>
+// Tilesets
+enum
+{
+    <%- j['defs']['tilesets'].each do|t| -%>
+    LDTK_TILESET_<%= t['identifier'].c_ident %>,
+    <%- end -%>
+    LDTK_NUM_TILESETS
+};
+
+<%# Output a list of levels -%>
+// Levels
+enum
+{
+    <%- j['levels'].each do|l| -%>
+    LDTK_LEVEL_<%= l['identifier'].c_ident %>,
+    <%- end -%>
+    LDTK_NUM_LEVELS
+};
+
+#endif // LDTK_WORLD_ENUM_H

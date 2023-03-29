@@ -1,0 +1,75 @@
+/***********************************************************
+* A platformer game
+* (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
+* 
+* This program is free software: you can redistribute it
+* and/or modify it under the terms of the GNU General
+* Public License as published by the Free Software
+* Foundation, either version 3 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be
+* useful, but WITHOUT ANY WARRANTY; without even the
+* implied warranty of MERCHANTABILITY or FITNESS FOR A
+* PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public
+* License along with this program.  If not, see
+* <https://www.gnu.org/licenses/>.
+**********************************************************/
+
+#ifndef LDTK_WORLD_DEFS_H
+#define LDTK_WORLD_DEFS_H
+
+#include "ldtk_forward.h"
+
+// Declarations
+extern LDtkLevel *ldtk_levels[LDTK_NUM_LEVELS];
+extern LDtkTileset *ldtk_tilesets[LDTK_NUM_TILESETS];
+<%- j['defs']['tilesets'].each do|t| -%>
+    extern LDtkTileset ldtk_tileset_<%= t['uid'] %>;
+    extern SDL_Texture *<%= t['identifier'] %>_texture;
+<%- end -%>
+
+<%- j['levels'].each do|lev| -%>
+    // Level '<%= lev['identifier'] %>'
+    extern LDtkLevel ldtk_<%= lev['iid'].c_ident %>;
+    extern LDtkLayer *ldtk_<%= lev['iid'].c_ident %>_layers[LDTK_NUM_LAYERS];
+    extern LDtkField ldtk_<%= lev['iid'].c_ident %>_fields[LDTK_NUM_LEVEL_FIELDS];
+    <%- lev['fieldInstances'].each do|f| -%>
+        <%- if f['__type'] =~ /^Array<([^>]+)>$/ -%>
+            extern <%= $1.ldtk_type_to_c_type %> ldtk_<%= lev['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[<%= f['__value'].length() %>];
+        <%- else -%>
+            extern <%= f['__type'].ldtk_type_to_c_type %> ldtk_<%= lev['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[1];
+        <%- end -%>
+    <%- end -%>
+    <%- lev['layerInstances'].each do|lay| -%>
+        extern LDtkLayer ldtk_<%= lay['iid'].c_ident %>;
+        <%- if lay['intGridCsv'].length() != 0 -%>
+            extern int ldtk_<%= lay['iid'].c_ident %>_intgrid[<%= lay['intGridCsv'].length() %>];
+        <%- end -%>
+        <%- if (lay['gridTiles'] + lay['autoLayerTiles']).length() != 0 -%>
+            extern LDtkTile ldtk_<%= lay['iid'].c_ident %>_tiles[<%= (lay['gridTiles'] + lay['autoLayerTiles']).length() %>];
+        <%- end -%>
+        <%- if lay['entityInstances'].length() != 0 -%>
+            extern LDtkEntity *ldtk_<%= lay['iid'].c_ident %>_entities[<%= lay['entityInstances'].length() %>];
+            <%- lay['entityInstances'].each do|e| -%>
+                extern LDtkEntity ldtk_<%= e['iid'].c_ident %>;
+                <%- if e['fieldInstances'].length() != 0 -%>
+                    extern LDtkField ldtk_<%= e['iid'].c_ident %>_fields[LDTK_ENTITY_<%= e['__identifier'] %>_NUM_FIELDS];
+                    <%- e['fieldInstances'].each do|f| -%>
+                        <%- if f['__type'] =~ /^Array<([^>]+)>$/ -%>
+                            extern <%= $1.ldtk_type_to_c_type %> ldtk_<%= e['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[<%= f['__value'].length() %>];
+                        <%- else -%>
+                            extern <%= f['__type'].ldtk_type_to_c_type %> ldtk_<%= e['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[1];
+                        <%- end -%>
+                    <%- end -%>
+                <%- end -%>
+            <%- end -%>
+        <%- end -%>
+    <%- end -%>
+    extern LDtkLayer *ldtk_<%= lev['iid'].c_ident %>_layers[LDTK_NUM_LAYERS];
+<%- end -%>
+
+#endif // LDTK_WORLD_DEFS_H
