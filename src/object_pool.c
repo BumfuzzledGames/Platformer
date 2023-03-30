@@ -19,13 +19,38 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef XTEXTURE
-#define XTEXTURE(...)
-#endif
+#include "object_pool.h"
 
-XTEXTURE(data_background_png)
-XTEXTURE(data_characters_png)
-XTEXTURE(data_tilemap_png)
-XTEXTURE(data_BasicHandwriting_0_png)
+int
+new_object_pool
+(
+    ObjectPool *this,
+    size_t size
+) {
+    *this = (ObjectPool)
+    {
+        .memory = SDL_calloc(1, size),
+        .size = size,
+        .tail = 0
+    };
+    if(this->memory != NULL)
+    {
+        return 0;
+    }
+    return 1;
+}
 
-#undef XTEXTURE
+Object *
+new_object
+(
+    ObjectPool *this,
+    size_t object_size
+) {
+    if(this->tail + object_size > this->size)
+    {
+        this->memory = SDL_realloc(this->memory, this->size * 2);
+        this->size *= 2;
+    }
+    this->tail += object_size;
+    return (Object*)(this->memory + this->tail - object_size);
+}

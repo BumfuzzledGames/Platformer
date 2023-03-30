@@ -25,8 +25,6 @@ int
 create_window
 (
     const char *title,
-    int window_width,
-    int window_height,
     int logical_width,
     int logical_height,
     SDL_bool is_integer_scale,
@@ -38,7 +36,7 @@ create_window
     *out_window = SDL_CreateWindow(
         title,
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
-        window_width, window_height,
+        logical_width, logical_height,
         SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_RESIZABLE | flags);
     if(*out_window == NULL)
     {

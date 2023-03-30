@@ -19,13 +19,15 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef XTEXTURE
-#define XTEXTURE(...)
-#endif
+#ifndef PLATFORMER_OBJECT_H
+#define PLATFORMER_OBJECT_H
+#include "object_header.h"
 
-XTEXTURE(data_background_png)
-XTEXTURE(data_characters_png)
-XTEXTURE(data_tilemap_png)
-XTEXTURE(data_BasicHandwriting_0_png)
+typedef struct Object Object;
 
-#undef XTEXTURE
+struct Object
+{
+    OBJECT_HEADER
+};
+
+#endif // PLATFORMER_OBJECT_H

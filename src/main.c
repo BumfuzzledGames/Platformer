@@ -22,11 +22,26 @@
 #include "ldtk.h"
 #include "SDL.h"
 #include "SDL_image.h"
+#include "font_metrics.h"
 #include "texture.h"
 #include "window.h"
+#include "draw.h"
+
+#include "object.h"
+#include "object_pool.h"
+#include "objects/tile_layer.h"
+#include "objects/menu_item.h"
+#include "type.h"
+
+#define GAME_WIDTH (1920/4)
+#define GAME_HEIGHT (1080/4)
+
+extern SDL_Texture *data_BasicHandwriting_0_png_texture;
+extern FontMetrics data_BasicHandwriting_fnt;
 
 int
-main(
+main
+(
     [[maybe_unused]] int argc,
     [[maybe_unused]] char *argv[]
 ) {
@@ -44,13 +59,12 @@ main(
         return -1;
     }
 
-    // Create the window
+    // Create the window and embiggen it
     SDL_Window *window;
     SDL_Renderer *renderer;
     if(create_window(
         "Platformer",
-        320, 240,
-        320, 240,
+        GAME_WIDTH, GAME_HEIGHT,
         SDL_TRUE,
         0,
         &window, &renderer
@@ -58,6 +72,7 @@ main(
         SDL_Log("%s Failed to create window", __func__);
         return -1;
     }
+    embiggen_window(window, renderer);
 
     // Load textures
     if(load_textures(renderer))
@@ -68,26 +83,49 @@ main(
 
     LDtkLevel *level = ldtk_levels[LDTK_LEVEL_Menu_0];
 
+    ObjectPool pool;
+    new_object_pool(&pool, 1024);
+
+    for(int lay = (int)level->num_layers - 1; lay >= 0; lay--)
+    {
+        if(level->layers[lay]->num_tiles != 0)
+        {
+            new_tile_layer
+            (
+                &pool,
+                level->layers[lay]
+            );
+        }
+        if(level->layers[lay]->num_entities != 0)
+        {
+            for(int e = 0; e < level->layers[lay]->num_entities; e++)
+            {
+                if(level->layers[lay]->entities[e]->type == LDTK_ENTITY_MenuItem)
+                {
+                    new_menu_item
+                    (
+                        &pool,
+                        level->layers[lay]->entities[e],
+                        data_BasicHandwriting_0_png_texture,
+                        &data_BasicHandwriting_fnt
+                    );
+                }
+            }
+        }
+    }
+
     while(1)
     {
         for(SDL_Event e; SDL_PollEvent(&e);) if(e.type == SDL_QUIT) goto done;
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
-
-        for(int lay = level->num_layers - 1; lay >= 0; lay--)
-        {
-            if(level->layers[lay]->num_tiles == 0) continue;
-            for(int t = 0; t < level->layers[lay]->num_tiles; t++)
-            {
-                SDL_RenderCopy
-                (
-                    renderer,
-                    *level->layers[lay]->tileset->texture,
-                    &level->layers[lay]->tiles[t].src,
-                    &level->layers[lay]->tiles[t].dst
-                );
-            }
+        for (
+            Object *obj = (Object*)pool.memory;
+            obj < (Object*)(pool.memory + pool.tail);
+            obj = (Object*)((Uint8*)obj + obj->size)
+        ) {
+            if(obj->type->render) obj->type->render(obj, renderer);
         }
         SDL_RenderPresent(renderer);
     }

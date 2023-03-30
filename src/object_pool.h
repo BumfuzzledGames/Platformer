@@ -19,13 +19,32 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef XTEXTURE
-#define XTEXTURE(...)
-#endif
+#ifndef PLATFORMER_OBJECT_POOL_H
+#define PLATFORMER_OBJECT_POOL_H
+#include "SDL.h"
 
-XTEXTURE(data_background_png)
-XTEXTURE(data_characters_png)
-XTEXTURE(data_tilemap_png)
-XTEXTURE(data_BasicHandwriting_0_png)
+typedef struct Object Object;
+typedef struct ObjectPool ObjectPool;
 
-#undef XTEXTURE
+struct ObjectPool
+{
+    Uint8 *memory;
+    size_t size;
+    size_t tail;
+};
+
+int
+new_object_pool
+(
+    ObjectPool *this,
+    size_t size
+);
+
+Object *
+new_object
+(
+    ObjectPool *this,
+    size_t object_size
+);
+
+#endif // PLATFORMER_OBJECT_POOL_H

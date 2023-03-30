@@ -39,8 +39,6 @@ int
 create_window
 (
     const char *title,              /**< Window title */
-    int window_width,               /**< Window width */
-    int window_height,              /**< Window height */
     int logical_width,              /**< Logical width */
     int logical_height,             /**< Logical height */
     SDL_bool is_integer_scale,      /**< Lock to integer scales? */

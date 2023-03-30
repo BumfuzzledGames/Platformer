@@ -50,7 +50,7 @@ load_textures
 (
     SDL_Renderer *renderer
 ) {
-    for(int t = 0; t < SDL_arraysize(textures); t++)
+    for(int t = 0; t < (int)SDL_arraysize(textures); t++)
     {
         SDL_Log("Loading %s...", textures[t].name);
 

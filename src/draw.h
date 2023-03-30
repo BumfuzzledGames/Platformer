@@ -19,13 +19,26 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef XTEXTURE
-#define XTEXTURE(...)
-#endif
+#ifndef PLATFORMER_DRAW_H
+#define PLATFORMER_DRAW_H
+#include "SDL.h"
+#include "font_metrics.h"
 
-XTEXTURE(data_background_png)
-XTEXTURE(data_characters_png)
-XTEXTURE(data_tilemap_png)
-XTEXTURE(data_BasicHandwriting_0_png)
+typedef enum DrawTextOptions
+{
+    DRAW_TEXT_HCENTER = 0b0001,
+    DRAW_TEXT_VCENTER = 0b0010,
+} DrawTextOptions;
 
-#undef XTEXTURE
+void
+draw_text
+(
+    SDL_Renderer *renderer,
+    SDL_Texture *texture,
+    const FontMetrics *font_metrics,
+    const char *text,
+    const SDL_Rect *dst,
+    DrawTextOptions options
+);
+
+#endif // PLATFORMER_DRAW_H

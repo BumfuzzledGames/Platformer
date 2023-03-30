@@ -18,14 +18,28 @@
 * License along with this program.  If not, see
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
+#ifndef PLATFORMER_OBJECTS_TILE_LAYER_H
+#define PLATFORMER_OBJECTS_TILE_LAYER_H
+#include "../object_header.h"
+#include "SDL.h"
 
-#ifndef XTEXTURE
-#define XTEXTURE(...)
-#endif
+typedef struct ObjectPool ObjectPool;
+typedef struct TileLayer TileLayer;
+typedef struct LDtkLayer LDtkLayer;
 
-XTEXTURE(data_background_png)
-XTEXTURE(data_characters_png)
-XTEXTURE(data_tilemap_png)
-XTEXTURE(data_BasicHandwriting_0_png)
+extern const Type TileLayer_type;
 
-#undef XTEXTURE
+struct TileLayer
+{
+    OBJECT_HEADER
+    LDtkLayer *ldtk_layer;
+};
+
+int
+new_tile_layer
+(
+    ObjectPool *object_pool,
+    LDtkLayer *ldtk_layer
+);
+
+#endif // PLATFORMER_OBJECTS_TILE_LAYER_H

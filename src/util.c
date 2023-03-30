@@ -20,17 +20,3 @@
 **********************************************************/
 
 #include "util.h"
-
-SDL_Color
-hex_to_sdl_color
-(
-    const char *hex
-) {
-    int r = 0;
-    int g = 0;
-    int b = 0;
-
-    SDL_sscanf(hex, "#%2x%2x%2x", &r, &g, &b);
-
-    return (SDL_Color){ r, g, b, 255 };
-}

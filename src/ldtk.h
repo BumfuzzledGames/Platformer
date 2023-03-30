@@ -22,7 +22,7 @@
 #ifndef LDTK_H
 #define LDTK_H
 #include "ldtk_forward.h"
-#include "ldtk_world_enum.h"
+#include "../gen/ldtk_world_enum.h"
 #include "SDL.h"
 
 typedef enum
@@ -140,8 +140,8 @@ struct LDtkEntity
     SDL_Point pivot;
     // tags?
     // tile?
-    float width;
-    float height;
+    int width;
+    int height;
     SDL_Point px;
     int num_fields;
     LDtkField *fields;
@@ -160,6 +160,6 @@ struct LDtkTileset
     int spacing;
 };
 
-#include "ldtk_world_defs.h"
+#include "../gen/ldtk_world_defs.h"
 
 #endif // LDTK_H

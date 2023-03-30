@@ -19,13 +19,35 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef XTEXTURE
-#define XTEXTURE(...)
-#endif
+#ifndef PLATFORMER_OBJECTS_MENU_ITEM_H
+#define PLATFORMER_OBJECTS_MENU_ITEM_H
 
-XTEXTURE(data_background_png)
-XTEXTURE(data_characters_png)
-XTEXTURE(data_tilemap_png)
-XTEXTURE(data_BasicHandwriting_0_png)
+#include "../object_header.h"
+#include "SDL.h"
 
-#undef XTEXTURE
+typedef struct FontMetrics FontMetrics;
+typedef struct LDtkEntity LDtkEntity;
+typedef struct ObjectPool ObjectPool;
+
+extern const Type MenuItem_type;
+
+typedef struct MenuItem MenuItem;
+struct MenuItem
+{
+    OBJECT_HEADER
+    SDL_Texture *texture;
+    const FontMetrics *font_metrics;
+    SDL_Rect area;
+    const char *text;
+};
+
+int
+new_menu_item
+(
+    ObjectPool *object_pool,
+    LDtkEntity *entity,
+    SDL_Texture *texture,
+    const FontMetrics *font_metrics
+);
+
+#endif // PLATFORMER_OBJECTS_MENU_IT_H

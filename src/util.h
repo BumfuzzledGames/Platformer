@@ -22,11 +22,4 @@
 #define PLATFORMER_UTIL_H
 #include "SDL.h"
 
-SDL_Color
-hex_to_sdl_color
-(
-    const char *hex
-);
-
-
 #endif // PLATFORMER_UTIL_H

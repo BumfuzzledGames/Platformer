@@ -19,13 +19,22 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef XTEXTURE
-#define XTEXTURE(...)
-#endif
+#ifndef PLATFORMER_TYPE_H
+#define PLATFORMER_TYPE_H
+#include "SDL.h"
 
-XTEXTURE(data_background_png)
-XTEXTURE(data_characters_png)
-XTEXTURE(data_tilemap_png)
-XTEXTURE(data_BasicHandwriting_0_png)
+typedef struct Type Type;
 
-#undef XTEXTURE
+#define UPDATE_ARGS , float delta_time
+#define UPDATE_ARG_NAMES , delta_time
+#define RENDER_ARGS , SDL_Renderer *renderer
+#define RENDER_ARG_NAMES , renderer
+
+struct Type
+{
+    const char *name;
+    void (*update)(void *object UPDATE_ARGS);
+    void (*render)(void *object RENDER_ARGS);
+};
+
+#endif // PLATFORMER_TYPE_H

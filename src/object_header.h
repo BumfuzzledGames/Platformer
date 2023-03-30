@@ -19,13 +19,15 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef XTEXTURE
-#define XTEXTURE(...)
-#endif
+#ifndef PLATFORMER_OBJECT_HEADER_H
+#define PLATFORMER_OBJECT_HEADER_H
+#include "SDL.h"
 
-XTEXTURE(data_background_png)
-XTEXTURE(data_characters_png)
-XTEXTURE(data_tilemap_png)
-XTEXTURE(data_BasicHandwriting_0_png)
+typedef struct Type Type;
 
-#undef XTEXTURE
+#define OBJECT_HEADER                                       \
+    const Type *type;                                       \
+    size_t size;                                            \
+    SDL_bool enabled;
+
+#endif // PLATFORMER_OBJECT_HEADER_H
