@@ -13,6 +13,7 @@ set(SRC
     src/objects/menu_item.c
     src/object_pool.c
     src/texture.c
+    src/type.c
     src/util.c
     src/window.c
 )

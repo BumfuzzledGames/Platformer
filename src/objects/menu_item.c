@@ -25,22 +25,22 @@
 #include "../type.h"
 #include "../draw.h"
 
+extern SDL_Texture *data_BasicHandwriting_0_png;
+extern Font data_BasicHandwriting_fnt;
+
 int
-new_menu_item
+new_from_entity
 (
     ObjectPool *object_pool,
-    LDtkEntity *entity,
-    SDL_Texture *texture,
-    const FontMetrics *font_metrics
+    LDtkEntity *entity
 ) {
     MenuItem *this = (MenuItem*)new_object(object_pool, sizeof(MenuItem));
-    (*this) = (MenuItem)
+    *this = (MenuItem)
     {
         .type = &MenuItem_type,
         .size = sizeof(MenuItem),
         .enabled = SDL_TRUE,
-        .texture = texture,
-        .font_metrics = font_metrics,
+        .font = &data_BasicHandwriting_fnt,
         .area =
         {
             .x = entity->px.x,
@@ -63,8 +63,7 @@ render
     draw_text
     (
         renderer,
-        this->texture,
-        this->font_metrics,
+        this->font,
         this->text,
         &this->area,
         DRAW_TEXT_HCENTER | DRAW_TEXT_VCENTER
@@ -75,5 +74,6 @@ render
 const Type MenuItem_type =
 {
     .name = "MenuItem",
+    .new_from_entity = new_from_entity,
     .render = render,
 };

@@ -70,13 +70,13 @@ if lines.select{|l| page_line.match(l) }.compact.count != 1
 end
 
 template = <<ERB
-#include "../src/font_metrics.h"
+#include "../src/font.h"
 
 <%- lines.map{|l| page_line.match(l) }.compact.each do|l| -%>
-extern SDL_Texture *data_<%= l[:file].c_ident %>;
+extern SDL_Texture *data_<%= l[:file].c_ident %>_texture;
 <%- end -%>
 
-FontMetrics <%= ARGV[0].c_ident %> =
+Font <%= ARGV[0].c_ident %> =
 {
 <%- lines.each do|line| -%>
     <%- if info_line =~ line -%>
@@ -91,7 +91,7 @@ FontMetrics <%= ARGV[0].c_ident %> =
     .<%= k.camel_case %> = <%= v %>,
     <%- end %>
     <%- elsif page_line =~ line -%>
-    .texture = &data_<%= $~[:file].c_ident %>,
+    .texture = &data_<%= $~[:file].c_ident %>_texture,
     <%- elsif char_line =~ line -%>
     .chars[<%= $~[:id]%>] = {
         .present = 1,

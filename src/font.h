@@ -19,13 +19,13 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef PLATFORMER_FONT_METRICS_H
-#define PLATFORMER_FONT_METRICS_H
+#ifndef PLATFORMER_FONT_H
+#define PLATFORMER_FONT_H
 #include "SDL.h"
 
-typedef struct FontMetrics FontMetrics;
+typedef struct Font Font;
 
-struct FontMetrics
+struct Font
 {
     // info
     const char *face;
@@ -76,4 +76,4 @@ struct FontMetrics
     } chars[256];
 };
 
-#endif // PLATFORMER_FONT_METRICS_H
+#endif // PLATFORMER_FONT_H

@@ -25,8 +25,7 @@ void
 draw_text
 (
     SDL_Renderer *renderer,
-    SDL_Texture *texture,
-    const FontMetrics *font_metrics,
+    const Font *font,
     const char *text,
     const SDL_Rect *dst,
     DrawTextOptions options
@@ -37,13 +36,13 @@ draw_text
         int text_width = 0;
         for(const char *c = text; *c; c++)
         {
-            if(font_metrics->chars[(unsigned)*c].present)
+            if(font->chars[(unsigned)*c].present)
             {
-                text_width += font_metrics->chars[(unsigned)*c].src.w;
+                text_width += font->chars[(unsigned)*c].src.w;
             }
             else
             {
-                text_width += font_metrics->chars[(unsigned)'?'].src.w;
+                text_width += font->chars[(unsigned)'?'].src.w;
             }
         }
 
@@ -51,26 +50,27 @@ draw_text
     }
     if(options & DRAW_TEXT_VCENTER)
     {
-        pos.y = dst->y + (dst->h - font_metrics->line_height) / 2;
+        pos.y = dst->y + (dst->h - font->line_height) / 2;
     }
 
     for(const char *c = text; *c; c++)
     {
         if(*c == ' ')
         {
-            pos.x += font_metrics->chars[(unsigned)'m'].src.w / 2;
+            pos.x += font->chars[(unsigned)'m'].src.w / 2;
         }
         else
         {
             char displayed_char = *c;
-            if(!font_metrics->chars[(unsigned)*c].present)
+            if(!font->chars[(unsigned)*c].present)
             {
                 displayed_char = '?';    
             }
-            #define C font_metrics->chars[(unsigned)displayed_char]
+            #define C font->chars[(unsigned)displayed_char]
+            (void)renderer;
             SDL_RenderCopy(
                 renderer,
-                texture,
+                *font->texture,
                 &C.src,
                 &(SDL_Rect)
                 {

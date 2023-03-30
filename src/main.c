@@ -1,7 +1,7 @@
 /***********************************************************
 * A platformer game
 * (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
-* 
+*
 * This program is free software: you can redistribute it
 * and/or modify it under the terms of the GNU General
 * Public License as published by the Free Software
@@ -22,7 +22,7 @@
 #include "ldtk.h"
 #include "SDL.h"
 #include "SDL_image.h"
-#include "font_metrics.h"
+#include "font.h"
 #include "texture.h"
 #include "window.h"
 #include "draw.h"
@@ -37,7 +37,7 @@
 #define GAME_HEIGHT (1080/4)
 
 extern SDL_Texture *data_BasicHandwriting_0_png_texture;
-extern FontMetrics data_BasicHandwriting_fnt;
+extern Font data_BasicHandwriting_fnt;
 
 int
 main
@@ -100,15 +100,13 @@ main
         {
             for(int e = 0; e < level->layers[lay]->num_entities; e++)
             {
-                if(level->layers[lay]->entities[e]->type == LDTK_ENTITY_MenuItem)
+                const Type *entity_type = entity_to_object[level->layers[lay]->entities[e]->type];
+                if(entity_type && entity_type->new_from_entity)
                 {
-                    new_menu_item
-                    (
-                        &pool,
-                        level->layers[lay]->entities[e],
-                        data_BasicHandwriting_0_png_texture,
-                        &data_BasicHandwriting_fnt
-                    );
+                    if(entity_type->new_from_entity(&pool, level->layers[lay]->entities[e]))
+                    {
+                        SDL_Log("Failed to create entity!");
+                    }
                 }
             }
         }
@@ -129,7 +127,7 @@ main
         }
         SDL_RenderPresent(renderer);
     }
-    
+
 done:
     SDL_Quit();
     return 0;

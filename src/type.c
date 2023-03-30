@@ -19,27 +19,13 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef PLATFORMER_TYPE_H
-#define PLATFORMER_TYPE_H
-#include "SDL.h"
-#include "ldtk.h"
+#include "type.h"
 
-typedef struct ObjectPool ObjectPool;
-typedef struct Type Type;
+#define XTYPE(TYPE) extern const Type TYPE##_type;
+#include "types.x"
 
-#define UPDATE_ARGS , float delta_time
-#define UPDATE_ARG_NAMES , delta_time
-#define RENDER_ARGS , SDL_Renderer *renderer
-#define RENDER_ARG_NAMES , renderer
-
-extern const Type *entity_to_object[LDTK_NUM_ENTITY_TYPES];
-
-struct Type
+const Type *entity_to_object[LDTK_NUM_ENTITY_TYPES] =
 {
-    const char *name;
-    int (*new_from_entity)(ObjectPool *object_pool, LDtkEntity *entity);
-    void (*update)(void *object UPDATE_ARGS);
-    void (*render)(void *object RENDER_ARGS);
+#   define XTYPE(TYPE) [LDTK_ENTITY_##TYPE] = &TYPE##_type,
+#   include "types.x"
 };
-
-#endif // PLATFORMER_TYPE_H

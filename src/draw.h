@@ -22,7 +22,7 @@
 #ifndef PLATFORMER_DRAW_H
 #define PLATFORMER_DRAW_H
 #include "SDL.h"
-#include "font_metrics.h"
+#include "font.h"
 
 typedef enum DrawTextOptions
 {
@@ -34,8 +34,7 @@ void
 draw_text
 (
     SDL_Renderer *renderer,
-    SDL_Texture *texture,
-    const FontMetrics *font_metrics,
+    const Font *font_metrics,
     const char *text,
     const SDL_Rect *dst,
     DrawTextOptions options

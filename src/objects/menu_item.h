@@ -25,7 +25,7 @@
 #include "../object_header.h"
 #include "SDL.h"
 
-typedef struct FontMetrics FontMetrics;
+typedef struct Font Font;
 typedef struct LDtkEntity LDtkEntity;
 typedef struct ObjectPool ObjectPool;
 
@@ -35,19 +35,9 @@ typedef struct MenuItem MenuItem;
 struct MenuItem
 {
     OBJECT_HEADER
-    SDL_Texture *texture;
-    const FontMetrics *font_metrics;
+    const Font *font;
     SDL_Rect area;
     const char *text;
 };
-
-int
-new_menu_item
-(
-    ObjectPool *object_pool,
-    LDtkEntity *entity,
-    SDL_Texture *texture,
-    const FontMetrics *font_metrics
-);
 
 #endif // PLATFORMER_OBJECTS_MENU_IT_H
