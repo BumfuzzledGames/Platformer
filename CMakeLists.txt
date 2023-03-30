@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(Platformer VERSION 0.1.0)
 find_package(SDL2 REQUIRED)
+if(NOT TARGET SDL2::SDL2main)
+    add_library(SDL2::SDL2main INTERFACE IMPORTED)
+endif()
 find_package(SDL2_image REQUIRED)
 
 file(MAKE_DIRECTORY gen)
@@ -21,7 +24,7 @@ set_source_files_properties(
     ${SRC}
     PROPERTIES
     COMPILE_FLAGS
-    "-Wall -Wextra -Wconversion -Wsign-conversion -Werror"
+    "-std=c2x -Wall -Wextra -Wconversion -Wsign-conversion -Werror"
 )
 
 set(DATA
