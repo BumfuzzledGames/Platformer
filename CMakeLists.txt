@@ -4,7 +4,6 @@ find_package(SDL2 REQUIRED)
 if(NOT TARGET SDL2::SDL2main)
     add_library(SDL2::SDL2main INTERFACE IMPORTED)
 endif()
-find_package(SDL2_image REQUIRED)
 
 file(MAKE_DIRECTORY gen)
 
@@ -15,6 +14,7 @@ set(SRC
     src/objects/tile_layer.c
     src/objects/menu_item.c
     src/object_pool.c
+    src/stb_image.c
     src/texture.c
     src/type.c
     src/util.c
@@ -25,6 +25,12 @@ set_source_files_properties(
     PROPERTIES
     COMPILE_FLAGS
     "-std=c2x -Wall -Wextra -Wconversion -Wsign-conversion -Werror"
+)
+set_source_files_properties(
+    src/stb_image.c
+    PROPERTIES
+    COMPILE_FLAGS
+    "-w"
 )
 
 set(DATA
@@ -85,5 +91,5 @@ add_executable(Platformer ${SRC} ${DATA_SRC} ${LDTK_SRC})
 target_link_libraries(
     Platformer
     SDL2::SDL2main SDL2::SDL2
-    SDL2_image
+    m
 )

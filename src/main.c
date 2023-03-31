@@ -26,7 +26,6 @@
 #include "object.h"
 #include "objects/menu_item.h"
 #include "objects/tile_layer.h"
-#include "SDL_image.h"
 #include "SDL.h"
 #include "texture.h"
 #include "type.h"
@@ -48,13 +47,6 @@ main
     if(SDL_Init(SDL_INIT_VIDEO))
     {
         SDL_Log("%s Failed to initialize SDL: %s", __func__, SDL_GetError());
-        return -1;
-    }
-
-    // Initialize IMG
-    if(IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
-    {
-        SDL_Log("%s Failed to initialize SDL_image: %s", __func__, IMG_GetError());
         return -1;
     }
 
