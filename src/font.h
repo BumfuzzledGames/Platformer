@@ -21,6 +21,7 @@
 
 #ifndef PLATFORMER_FONT_H
 #define PLATFORMER_FONT_H
+
 #include "SDL.h"
 
 typedef struct Font Font;
@@ -29,10 +30,10 @@ struct Font
 {
     // info
     const char *face;
+    const char *charset;
     int size;
     SDL_bool bold;
     SDL_bool italic;
-    const char *charset;
     SDL_bool unicode;
     int stretch_h;
     SDL_bool smooth;

@@ -21,13 +21,15 @@
 
 #ifndef PLATFORMER_DRAW_H
 #define PLATFORMER_DRAW_H
-#include "SDL.h"
+
 #include "font.h"
+#include "SDL.h"
 
 typedef enum DrawTextOptions
 {
-    DRAW_TEXT_HCENTER = 0b0001,
-    DRAW_TEXT_VCENTER = 0b0010,
+    DRAW_TEXT_HCENTER = 0x01,
+    DRAW_TEXT_VCENTER = 0x02,
+    DRAW_TEXT_CENTER = 0x03,
 } DrawTextOptions;
 
 void

@@ -21,8 +21,9 @@
 
 #ifndef PLATFORMER_TYPE_H
 #define PLATFORMER_TYPE_H
-#include "SDL.h"
+
 #include "ldtk.h"
+#include "SDL.h"
 
 typedef struct ObjectPool ObjectPool;
 typedef struct Type Type;

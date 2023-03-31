@@ -21,6 +21,7 @@
 
 #ifndef PLATFORMER_OBJECT_HEADER_H
 #define PLATFORMER_OBJECT_HEADER_H
+
 #include "SDL.h"
 
 typedef struct Type Type;

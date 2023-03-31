@@ -18,6 +18,7 @@
 * License along with this program.  If not, see
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
+
 #include "SDL_image.h"
 #include "texture.h"
 
@@ -52,18 +53,10 @@ load_textures
 ) {
     for(int t = 0; t < (int)SDL_arraysize(textures); t++)
     {
-        SDL_Log("Loading %s...", textures[t].name);
-
-        SDL_RWops *rw = SDL_RWFromConstMem
-        (
-            textures[t].memory,
-            (int)*textures[t].size
-        );
-
         *textures[t].texture = IMG_LoadTexture_RW
         (
             renderer,
-            rw,
+            SDL_RWFromConstMem(textures[t].memory, (int)*textures[t].size),
             1
         );
         if(*textures[t].texture == NULL)

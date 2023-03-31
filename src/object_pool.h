@@ -21,7 +21,11 @@
 
 #ifndef PLATFORMER_OBJECT_POOL_H
 #define PLATFORMER_OBJECT_POOL_H
+
 #include "SDL.h"
+
+// How do I know that value of this for various platforms?
+#define OBJECT_POOL_ALIGN 16
 
 typedef struct Object Object;
 typedef struct ObjectPool ObjectPool;
@@ -40,7 +44,7 @@ new_object_pool
     size_t size
 );
 
-Object *
+Object * 
 new_object
 (
     ObjectPool *this,

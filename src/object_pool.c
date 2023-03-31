@@ -20,6 +20,9 @@
 **********************************************************/
 
 #include "object_pool.h"
+#include "object.h"
+
+#define ALIGN _Alignof(Object)
 
 int
 new_object_pool
@@ -46,6 +49,7 @@ new_object
     ObjectPool *this,
     size_t object_size
 ) {
+    object_size = (object_size + (size_t)ALIGN - 1) & ~((size_t)ALIGN - 1);
     if(this->tail + object_size > this->size)
     {
         this->memory = SDL_realloc(this->memory, this->size * 2);

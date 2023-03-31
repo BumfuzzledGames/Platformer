@@ -20,6 +20,7 @@
 **********************************************************/
 #ifndef PLATFORMER_TEXTURE_H
 #define PLATFORMER_TEXTURE_H
+
 #include "SDL.h"
 
 #define XTEXTURE(T) extern SDL_Texture *T##_texture;

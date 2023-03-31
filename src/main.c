@@ -19,19 +19,18 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#include "ldtk.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#include "font.h"
-#include "texture.h"
-#include "window.h"
 #include "draw.h"
-
-#include "object.h"
+#include "font.h"
+#include "ldtk.h"
 #include "object_pool.h"
-#include "objects/tile_layer.h"
+#include "object.h"
 #include "objects/menu_item.h"
+#include "objects/tile_layer.h"
+#include "SDL_image.h"
+#include "SDL.h"
+#include "texture.h"
 #include "type.h"
+#include "window.h"
 
 #define GAME_WIDTH (1920/4)
 #define GAME_HEIGHT (1080/4)
@@ -98,7 +97,7 @@ main
         }
         if(level->layers[lay]->num_entities != 0)
         {
-            for(int e = 0; e < level->layers[lay]->num_entities; e++)
+            for(size_t e = 0; e < level->layers[lay]->num_entities; e++)
             {
                 const Type *entity_type = entity_to_object[level->layers[lay]->entities[e]->type];
                 if(entity_type && entity_type->new_from_entity)

@@ -21,6 +21,7 @@
 
 #ifndef PLATFORMER_OBJECT_H
 #define PLATFORMER_OBJECT_H
+
 #include "object_header.h"
 
 typedef struct Object Object;

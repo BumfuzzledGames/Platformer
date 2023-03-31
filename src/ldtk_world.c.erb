@@ -56,7 +56,9 @@ LDtkTileset *ldtk_tilesets[LDTK_NUM_TILESETS] =
         .dimensions = { <%= lev['pxWid'] %>, <%= lev['pxHei'] %> },
         .background_color = { <%= lev['__bgColor'].hex_to_rgb.join(', ') %>, 255 },
         .num_fields = <%= lev['fieldInstances'].length() %>,
+        <%- if j['defs']['levelFields'].length() > 0 -%>
         .fields = &ldtk_<%= lev['iid'].c_ident %>_fields[0],
+        <%- end -%>
         .num_layers = <%= lev['layerInstances'].length() %>,
         .layers = &ldtk_<%= lev['iid'].c_ident %>_layers[0],
     };

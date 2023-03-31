@@ -19,10 +19,10 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#include "../type.h"
 #include "../ldtk.h"
-#include "tile_layer.h"
 #include "../object_pool.h"
+#include "../type.h"
+#include "tile_layer.h"
 
 int
 new_tile_layer
@@ -48,7 +48,7 @@ render
     RENDER_ARGS
 ) {
     TileLayer *this = this_;
-    for(int t = 0; t < this->ldtk_layer->num_tiles; t++)
+    for(size_t t = 0; t < this->ldtk_layer->num_tiles; t++)
     {
         SDL_RenderCopy
         (

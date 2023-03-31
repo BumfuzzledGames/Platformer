@@ -18,6 +18,7 @@
 * License along with this program.  If not, see
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,7 +29,12 @@
 #define UPPER "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 #define NUMBER "0123456789"
 
-FILE *open_or_die(const char *filename, const char *mode) {
+FILE *
+open_or_die
+(
+    const char *filename,
+    const char *mode
+) {
     FILE *file = fopen(filename, mode);
     if (file == 0) {
         fprintf(stderr, "Could not open %s\n", filename);
@@ -37,17 +43,26 @@ FILE *open_or_die(const char *filename, const char *mode) {
     return file;
 }
 
-char *string_to_identifier(const char *string) {
+char *
+string_to_identifier
+(
+    char *string
+) {
     char *identifier = calloc(1, strlen(string) + 1);
-    for (int i = 0; i < strlen(string); i++)
-        if (strchr(LOWER UPPER NUMBER, string[i]))
-            identifier[i] = string[i];
-        else
-            identifier[i] = '_';
+    for(char *in = string, *out = identifier; *in; in++, out++)
+    {
+        if(strchr(LOWER UPPER NUMBER, *in)) *out = *in;
+        else *out = '_';
+    }
     return identifier;
 }
 
-int main(int argc, char *argv[]) {
+int
+main
+(
+    int argc,
+    char *argv[]
+) {
     if (argc != 3) {
         fprintf(stderr, "Usage: %s infile outfile", argv[0]);
         exit(EXIT_FAILURE);

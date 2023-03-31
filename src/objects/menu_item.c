@@ -19,16 +19,16 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#include "menu_item.h"
+#include "../draw.h"
 #include "../ldtk.h"
 #include "../object_pool.h"
 #include "../type.h"
-#include "../draw.h"
+#include "menu_item.h"
 
 extern SDL_Texture *data_BasicHandwriting_0_png;
 extern Font data_BasicHandwriting_fnt;
 
-int
+static int
 new_from_entity
 (
     ObjectPool *object_pool,

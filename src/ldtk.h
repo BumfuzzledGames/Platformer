@@ -21,8 +21,9 @@
 
 #ifndef LDTK_H
 #define LDTK_H
-#include "ldtk_forward.h"
+
 #include "../gen/ldtk_world_enum.h"
+#include "ldtk_forward.h"
 #include "SDL.h"
 
 typedef enum
@@ -85,12 +86,12 @@ struct LDtkLayer
     float opacity;
     SDL_Point offset;
     // LAYER_TYPE_ENTITIES
-    int num_entities;
+    size_t num_entities;
     LDtkEntity **entities;
 
     // LAYER_TYPE_TILES and LAYER_TYPE_AutoLayer
     LDtkTileset *tileset;
-    int num_tiles;
+    size_t num_tiles;
     LDtkTile *tiles;
 
     // LAYER_TYPE_INTEGER_GRID
@@ -143,7 +144,7 @@ struct LDtkEntity
     int width;
     int height;
     SDL_Point px;
-    int num_fields;
+    size_t num_fields;
     LDtkField *fields;
 
     void *user;

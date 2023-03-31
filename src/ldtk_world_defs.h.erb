@@ -36,7 +36,9 @@ extern LDtkTileset *ldtk_tilesets[LDTK_NUM_TILESETS];
     // Level '<%= lev['identifier'] %>'
     extern LDtkLevel ldtk_<%= lev['iid'].c_ident %>;
     extern LDtkLayer *ldtk_<%= lev['iid'].c_ident %>_layers[LDTK_NUM_LAYERS];
+    <%- if j['defs']['levelFields'].length() > 0 -%>
     extern LDtkField ldtk_<%= lev['iid'].c_ident %>_fields[LDTK_NUM_LEVEL_FIELDS];
+    <%- end -%>
     <%- lev['fieldInstances'].each do|f| -%>
         <%- if f['__type'] =~ /^Array<([^>]+)>$/ -%>
             extern <%= $1.ldtk_type_to_c_type %> ldtk_<%= lev['iid'].c_ident %>_field_<%= f['__identifier'].c_ident %>_values[<%= f['__value'].length() %>];
