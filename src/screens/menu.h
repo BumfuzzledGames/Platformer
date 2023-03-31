@@ -1,7 +1,7 @@
 /***********************************************************
 * A platformer game
 * (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
-* 
+*
 * This program is free software: you can redistribute it
 * and/or modify it under the terms of the GNU General
 * Public License as published by the Free Software
@@ -19,29 +19,16 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef PLATFORMER_TYPE_H
-#define PLATFORMER_TYPE_H
+#ifndef PLATFORMER_SCREENS_MENU_H
+#define PLATFORMER_SCREENS_MENU_H
 
-#include "ldtk.h"
-#include "SDL.h"
+typedef struct Screen Screen;
+typedef struct LDtkLevel LDtkLevel;
 
-typedef struct Object Object;
-typedef struct ObjectPool ObjectPool;
-typedef struct Type Type;
+Screen *
+menu_screen
+(
+    LDtkLevel *menu_level
+);
 
-#define UPDATE_ARGS , float delta_time
-#define UPDATE_ARG_NAMES , delta_time
-#define RENDER_ARGS , SDL_Renderer *renderer
-#define RENDER_ARG_NAMES , renderer
-
-extern const Type *entity_to_object[LDTK_NUM_ENTITY_TYPES];
-
-struct Type
-{
-    const char *name;
-    Object *(*new_from_entity)(ObjectPool *object_pool, LDtkEntity *entity);
-    void (*update)(void *object UPDATE_ARGS);
-    void (*render)(void *object RENDER_ARGS);
-};
-
-#endif // PLATFORMER_TYPE_H
+#endif // PLATFORMER_SCREENS_MENU_H

@@ -1,7 +1,7 @@
 /***********************************************************
 * A platformer game
 * (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
-* 
+*
 * This program is free software: you can redistribute it
 * and/or modify it under the terms of the GNU General
 * Public License as published by the Free Software
@@ -19,29 +19,27 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef PLATFORMER_TYPE_H
-#define PLATFORMER_TYPE_H
+#ifndef PLATFORMER_SCREEN_H
+#define PLATFORMER_SCREEN_H
 
-#include "ldtk.h"
-#include "SDL.h"
+typedef struct Screen Screen;
+typedef struct SDL_Renderer SDL_Renderer;
 
-typedef struct Object Object;
-typedef struct ObjectPool ObjectPool;
-typedef struct Type Type;
+#define SCREEN_UPDATE_ARGS float delta_time
+#define SCREEN_UPDATE_ARG_NAMES delta_time
 
-#define UPDATE_ARGS , float delta_time
-#define UPDATE_ARG_NAMES , delta_time
-#define RENDER_ARGS , SDL_Renderer *renderer
-#define RENDER_ARG_NAMES , renderer
+#define SCREEN_RENDER_ARGS SDL_Renderer *renderer
+#define SCREEN_RENDER_ARG_NAMES renderer
 
-extern const Type *entity_to_object[LDTK_NUM_ENTITY_TYPES];
+#define SCREEN_LEAVE_ARGS
+#define SCREEN_LEAVE_ARG_NAMES
 
-struct Type
+struct Screen
 {
-    const char *name;
-    Object *(*new_from_entity)(ObjectPool *object_pool, LDtkEntity *entity);
-    void (*update)(void *object UPDATE_ARGS);
-    void (*render)(void *object RENDER_ARGS);
+    float time;
+    int (*update)(SCREEN_UPDATE_ARGS);
+    void (*render)(SCREEN_RENDER_ARGS);
+    void (*leave)(SCREEN_LEAVE_ARGS);
 };
 
-#endif // PLATFORMER_TYPE_H
+#endif // PLATFORMER_SCREEN_H

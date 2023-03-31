@@ -28,7 +28,7 @@
 extern SDL_Texture *data_BasicHandwriting_0_png;
 extern Font data_BasicHandwriting_fnt;
 
-static int
+static Object *
 new_from_entity
 (
     ObjectPool *object_pool,
@@ -50,7 +50,7 @@ new_from_entity
         },
         .text = entity->fields[LDTK_ENTITY_MenuItem_FIELD_Text].value.strings[0],
     };
-    return 0;
+    return (Object*)this;
 }
 
 static void

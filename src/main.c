@@ -26,6 +26,8 @@
 #include "object.h"
 #include "objects/menu_item.h"
 #include "objects/tile_layer.h"
+#include "screen.h"
+#include "screens/menu.h"
 #include "SDL.h"
 #include "texture.h"
 #include "type.h"
@@ -72,36 +74,10 @@ main
         return -1;
     }
 
-    LDtkLevel *level = ldtk_levels[LDTK_LEVEL_Menu_0];
-
-    ObjectPool pool;
-    new_object_pool(&pool, 1024);
-
-    for(int lay = (int)level->num_layers - 1; lay >= 0; lay--)
-    {
-        if(level->layers[lay]->num_tiles != 0)
-        {
-            new_tile_layer
-            (
-                &pool,
-                level->layers[lay]
-            );
-        }
-        if(level->layers[lay]->num_entities != 0)
-        {
-            for(size_t e = 0; e < level->layers[lay]->num_entities; e++)
-            {
-                const Type *entity_type = entity_to_object[level->layers[lay]->entities[e]->type];
-                if(entity_type && entity_type->new_from_entity)
-                {
-                    if(entity_type->new_from_entity(&pool, level->layers[lay]->entities[e]))
-                    {
-                        SDL_Log("Failed to create entity!");
-                    }
-                }
-            }
-        }
-    }
+    Screen *current_screen = menu_screen
+    (
+        ldtk_levels[LDTK_LEVEL_Menu_0]
+    );
 
     while(1)
     {
@@ -109,13 +85,12 @@ main
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
-        for (
-            Object *obj = (Object*)pool.memory;
-            obj < (Object*)(pool.memory + pool.tail);
-            obj = (Object*)((Uint8*)obj + obj->size)
-        ) {
-            if(obj->type->render) obj->type->render(obj, renderer);
-        }
+        if(current_screen->update) current_screen->update(0);
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        if(current_screen->render) current_screen->render(renderer);
         SDL_RenderPresent(renderer);
     }
 

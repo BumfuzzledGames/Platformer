@@ -14,6 +14,7 @@ set(SRC
     src/objects/tile_layer.c
     src/objects/menu_item.c
     src/object_pool.c
+    src/screens/menu.c
     src/stb_image.c
     src/texture.c
     src/type.c
@@ -22,6 +23,7 @@ set(SRC
 )
 set_source_files_properties(
     ${SRC}
+    src/bin2c.c
     PROPERTIES
     COMPILE_FLAGS
     "-std=c2x -Wall -Wextra -Wconversion -Wsign-conversion -Werror"
