@@ -1,7 +1,7 @@
 /***********************************************************
 * A platformer game
 * (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
-* 
+*
 * This program is free software: you can redistribute it
 * and/or modify it under the terms of the GNU General
 * Public License as published by the Free Software
@@ -19,29 +19,24 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef PLATFORMER_TYPE_H
-#define PLATFORMER_TYPE_H
-
+#include "object.h"
+#include "object_pool.h"
 #include "ldtk.h"
-#include "SDL.h"
+#include "type.h"
 
-typedef struct Object Object;
-typedef struct ObjectPool ObjectPool;
-typedef struct Type Type;
+Object *
+spawn_object_from_entity
+(
+    ObjectPool *object_pool,
+    LDtkEntity *entity
+) {
+    const Type *type = entity_types[entity->type];
+    if(type == NULL || type->new_from_entity == NULL) return SDL_FALSE;
 
-#define UPDATE_ARGS , float delta_time
-#define UPDATE_ARG_NAMES , delta_time
-#define RENDER_ARGS , SDL_Renderer *renderer
-#define RENDER_ARG_NAMES , renderer
-
-extern const Type *entity_types[LDTK_NUM_ENTITY_TYPES];
-
-struct Type
-{
-    const char *name;
-    Object *(*new_from_entity)(ObjectPool *object_pool, LDtkEntity *entity);
-    void (*update)(void *object UPDATE_ARGS);
-    void (*render)(void *object RENDER_ARGS);
-};
-
-#endif // PLATFORMER_TYPE_H
+    Object *object = type->new_from_entity(object_pool, entity);
+    if(object == NULL)
+    {
+        SDL_Log("%s Failed to create object from entity", __func__);
+    }
+    return object;
+}

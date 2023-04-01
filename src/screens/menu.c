@@ -34,6 +34,26 @@ static Screen screen;
 static ObjectPool pool;
 static MenuItem **start_item;
 
+static int
+entity_callback
+(
+    LDtkEntity *entity
+) {
+    switch(entity->type)
+    {
+    case LDTK_ENTITY_MenuStart:
+        start_item = (MenuItem**)
+            &entity
+                ->fields[LDTK_ENTITY_MenuStart_FIELD_MenuStart]
+                .value
+                .entity_refs[0]
+                ->user;
+        return 1;
+    default:
+        return 0;
+    }
+}
+
 Screen *
 menu_screen
 (
@@ -41,68 +61,12 @@ menu_screen
 )
 {
     new_object_pool(&pool, POOL_SIZE);
-
-    // Instantiate objects
-    for
-    (
-        size_t layer_index = menu_level->num_layers - 1,
-        counter = menu_level->num_layers;
-        counter > 0;
-        layer_index--, counter--
-    ) {
-        LDtkLayer *layer = menu_level->layers[layer_index];
-
-        // If it has tiles, spawn a TileLayer object
-        if(layer->num_tiles != 0)
-        {
-            new_tile_layer(&pool, layer);
-        }
-
-        // If it has entities, spawn entity objects
-        for
-        (
-            size_t entity_index = 0;
-            entity_index < layer->num_entities;
-            entity_index++
-        ) {
-            LDtkEntity *entity = layer->entities[entity_index];
-            switch(entity->type)
-            {
-            case LDTK_ENTITY_MenuStart:
-                start_item = (MenuItem**)
-                    &entity->
-                    fields[LDTK_ENTITY_MenuStart_FIELD_MenuStart].
-                    value.
-                    entity_refs[0]->
-                    user;
-                break;
-            default:
-                {
-                    const Type *entity_type = entity_to_object[entity->type];
-                    if(entity_type && entity_type->new_from_entity)
-                    {
-                        Object *object = entity_type->new_from_entity
-                        (
-                            &pool,
-                            entity
-                        );
-                        if(object == NULL)
-                        {
-                            SDL_Log
-                            (
-                                "%s Failed to create object from entity",
-                                __func__
-                            );
-                        }
-                        else
-                        {
-                            entity->user = object;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    new_screen_objects(
+        &pool,
+        menu_level,
+        NULL,
+        entity_callback
+    );
     return &screen;
 }
 

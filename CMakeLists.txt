@@ -13,7 +13,9 @@ set(SRC
     src/main.c
     src/objects/tile_layer.c
     src/objects/menu_item.c
+    src/object.c
     src/object_pool.c
+    src/screen.c
     src/screens/menu.c
     src/stb_image.c
     src/texture.c

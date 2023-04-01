@@ -22,6 +22,10 @@
 #ifndef PLATFORMER_SCREEN_H
 #define PLATFORMER_SCREEN_H
 
+typedef struct LDtkEntity LDtkEntity;
+typedef struct LDtkLayer LDtkLayer;
+typedef struct LDtkLevel LDtkLevel;
+typedef struct ObjectPool ObjectPool;
 typedef struct Screen Screen;
 typedef struct SDL_Renderer SDL_Renderer;
 
@@ -41,5 +45,14 @@ struct Screen
     void (*render)(SCREEN_RENDER_ARGS);
     void (*leave)(SCREEN_LEAVE_ARGS);
 };
+
+void
+new_screen_objects
+(
+    ObjectPool *object_pool,
+    LDtkLevel *level,
+    int (*layer_callback)(LDtkLayer *layer),
+    int (*entity_callback)(LDtkEntity *entity)
+);
 
 #endif // PLATFORMER_SCREEN_H

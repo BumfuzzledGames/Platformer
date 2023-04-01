@@ -24,7 +24,7 @@
 #define XTYPE(TYPE) extern const Type TYPE##_type;
 #include "types.x"
 
-const Type *entity_to_object[LDTK_NUM_ENTITY_TYPES] =
+const Type *entity_types[LDTK_NUM_ENTITY_TYPES] =
 {
 #   define XTYPE(TYPE) [LDTK_ENTITY_##TYPE] = &TYPE##_type,
 #   include "types.x"

@@ -25,10 +25,19 @@
 #include "object_header.h"
 
 typedef struct Object Object;
+typedef struct ObjectPool ObjectPool;
+typedef struct LDtkEntity LDtkEntity;
 
 struct Object
 {
     OBJECT_HEADER
 };
+
+Object *
+spawn_object_from_entity
+(
+    ObjectPool *object_pool,
+    LDtkEntity *entity
+);
 
 #endif // PLATFORMER_OBJECT_H
