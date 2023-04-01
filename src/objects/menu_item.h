@@ -22,7 +22,7 @@
 #ifndef PLATFORMER_OBJECTS_MENU_ITEM_H
 #define PLATFORMER_OBJECTS_MENU_ITEM_H
 
-#include "../object_header.h"
+#include "text.h"
 #include "SDL.h"
 
 typedef struct Font Font;
@@ -34,10 +34,12 @@ extern const Type MenuItem_type;
 typedef struct MenuItem MenuItem;
 struct MenuItem
 {
-    OBJECT_HEADER
-    const Font *font;
-    SDL_Rect area;
-    const char *text;
+    Text Text;
+    SDL_bool selected;
+    MenuItem **up;
+    MenuItem **down;
+    MenuItem **left;
+    MenuItem **right;
 };
 
 #endif // PLATFORMER_OBJECTS_MENU_IT_H

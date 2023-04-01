@@ -1,7 +1,7 @@
 /***********************************************************
 * A platformer game
 * (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
-* 
+*
 * This program is free software: you can redistribute it
 * and/or modify it under the terms of the GNU General
 * Public License as published by the Free Software
@@ -19,16 +19,39 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef PLATFORMER_OBJECT_HEADER_H
-#define PLATFORMER_OBJECT_HEADER_H
+#ifndef PLATFORMER_KEYBOARD_H
+#define PLATFORMER_KEYBOARD_H
 
 #include "SDL.h"
 
-typedef struct Type Type;
+void
+init_keyboard
+(
+    void
+);
 
-#define OBJECT_HEADER                                       \
-    const Type *type;                                       \
-    size_t size;                                            \
-    SDL_bool enabled;
+void
+update_keyboard
+(
+    void
+);
 
-#endif // PLATFORMER_OBJECT_HEADER_H
+SDL_bool
+is_key_pressed
+(
+    SDL_KeyCode key
+);
+
+SDL_bool
+was_key_just_pressed
+(
+    SDL_KeyCode key
+);
+
+SDL_bool
+was_key_just_released
+(
+    SDL_KeyCode key
+);
+
+#endif // PLATFORMER_KEYBOARD_H

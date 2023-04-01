@@ -1,7 +1,7 @@
 /***********************************************************
 * A platformer game
 * (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
-* 
+*
 * This program is free software: you can redistribute it
 * and/or modify it under the terms of the GNU General
 * Public License as published by the Free Software
@@ -19,35 +19,51 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#include "../ldtk.h"
-#include "../object_pool.h"
+#include "text.h"
+#include "../draw.h"
 #include "../type.h"
-#include "tile_layer.h"
+#include "../object_pool.h"
 
-int
-new_tile_layer
+Text *
+new_text
 (
     ObjectPool *object_pool,
-    LDtkLayer *ldtk_layer
+    size_t size_override,
+    const Font *font,
+    const SDL_Color *color,
+    const SDL_Rect *area,
+    const char *text,
+    DrawTextOptions draw_options
 ) {
     size_t this_size;
-    TileLayer *this = (TileLayer*)new_object(
+    Text *this = (Text*)new_object
+    (
         object_pool,
-        sizeof(TileLayer),
-        0,
+        sizeof(Text),
+        size_override,
         &this_size
     );
-    *this = (TileLayer)
+    if(this == NULL)
+    {
+        SDL_Log("%s Failed to allocate object", __func__);
+        return NULL;
+    }
+
+    *this = (Text)
     {
         .Object =
         {
-            .type = &TileLayer_type,
+            .type = &Text_type,
             .size = this_size,
             .enabled = SDL_TRUE,
         },
-        .ldtk_layer = ldtk_layer,
+        .font = font,
+        .color = *color,
+        .area = *area,
+        .text = text,
+        .draw_options = draw_options,
     };
-    return 0;
+    return this;
 }
 
 static void
@@ -56,21 +72,30 @@ render
     void *this_,
     RENDER_ARGS
 ) {
-    TileLayer *this = this_;
-    for(size_t t = 0; t < this->ldtk_layer->num_tiles; t++)
-    {
-        SDL_RenderCopy
-        (
-            renderer,
-            *this->ldtk_layer->tileset->texture,
-            &this->ldtk_layer->tiles[t].src,
-            &this->ldtk_layer->tiles[t].dst
-        );
-    }
+    Text *this = this_;
+    SDL_SetTextureColorMod
+    (
+        *this->font->texture,
+        this->color.r, this->color.g, this->color.b
+    );
+    SDL_SetTextureAlphaMod
+    (
+        *this->font->texture,
+        this->color.a
+    );
+
+    draw_text
+    (
+        renderer,
+        this->font,
+        this->text,
+        &this->area,
+        DRAW_TEXT_CENTER
+    );
 }
 
-const Type TileLayer_type =
+const Type Text_type =
 {
-    .name = "TileLayer",
+    .name = "Text",
     .render = render,
 };

@@ -9,10 +9,12 @@ file(MAKE_DIRECTORY gen)
 
 set(SRC
     src/draw.c
+    src/keyboard.c
     src/ldtk.c
     src/main.c
     src/objects/tile_layer.c
     src/objects/menu_item.c
+    src/objects/text.c
     src/object.c
     src/object_pool.c
     src/screen.c

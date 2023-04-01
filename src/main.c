@@ -21,6 +21,7 @@
 
 #include "draw.h"
 #include "font.h"
+#include "keyboard.h"
 #include "ldtk.h"
 #include "object_pool.h"
 #include "object.h"
@@ -74,6 +75,9 @@ main
         return -1;
     }
 
+    // Initialize input
+    init_keyboard();
+
     Screen *current_screen = menu_screen
     (
         ldtk_levels[LDTK_LEVEL_Menu_0]
@@ -82,6 +86,8 @@ main
     while(1)
     {
         for(SDL_Event e; SDL_PollEvent(&e);) if(e.type == SDL_QUIT) goto done;
+
+        update_keyboard();
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);

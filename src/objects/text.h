@@ -1,7 +1,7 @@
 /***********************************************************
 * A platformer game
 * (C) 2023 Bumfuzzled Games <bumfuzzled.games@gmail.com>
-* 
+*
 * This program is free software: you can redistribute it
 * and/or modify it under the terms of the GNU General
 * Public License as published by the Free Software
@@ -19,30 +19,46 @@
 * <https://www.gnu.org/licenses/>.
 **********************************************************/
 
-#ifndef PLATFORMER_TYPE_H
-#define PLATFORMER_TYPE_H
+#ifndef PLATFORMER_OBJECTS_TEXT_H
+#define PLATFORMER_OBJECTS_TEXT_H
 
-#include "ldtk.h"
+#include "../object.h"
+#include "../font.h"
+#include "../draw.h"
 #include "SDL.h"
 
-typedef struct Object Object;
-typedef struct ObjectPool ObjectPool;
-typedef struct Type Type;
+typedef struct Font Font;
 
-#define UPDATE_ARGS float delta_time
-#define UPDATE_ARG_NAMES delta_time
-#define RENDER_ARGS SDL_Renderer *renderer
-#define RENDER_ARG_NAMES renderer
+extern const Type Text_type;
 
-extern const Type *entity_types[LDTK_NUM_ENTITY_TYPES];
-
-struct Type
+typedef struct Text Text;
+struct Text
 {
-    const char *name;
-    const Type *parent;
-    Object *(*new_from_entity)(ObjectPool *object_pool, LDtkEntity *entity);
-    void (*update)(void *object, UPDATE_ARGS);
-    void (*render)(void *object, RENDER_ARGS);
+    Object Object;
+    const Font *font;
+    SDL_Color color;
+    SDL_Rect area;
+    const char *text;
+    DrawTextOptions draw_options;
 };
 
-#endif // PLATFORMER_TYPE_H
+Text *
+new_text
+(
+    ObjectPool *object_pool,
+    size_t size_override,
+    const Font *font,
+    const SDL_Color *color,
+    const SDL_Rect *area,
+    const char *text,
+    DrawTextOptions draw_options
+);
+
+void
+render_text_object
+(
+    void *object,
+    RENDER_ARGS
+);
+
+#endif // PLATFORMER_OBJECTS_TEXT_H

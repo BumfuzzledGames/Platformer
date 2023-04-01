@@ -25,7 +25,7 @@
 #include "type.h"
 
 Object *
-spawn_object_from_entity
+new_object_from_entity
 (
     ObjectPool *object_pool,
     LDtkEntity *entity
@@ -38,5 +38,6 @@ spawn_object_from_entity
     {
         SDL_Log("%s Failed to create object from entity", __func__);
     }
+    entity->user = object;
     return object;
 }

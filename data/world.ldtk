@@ -11,7 +11,7 @@
 	"iid": "fe9cff00-c640-11ed-9e5f-ed064a05e98a",
 	"jsonVersion": "1.2.5",
 	"appBuildId": 464870,
-	"nextUid": 62,
+	"nextUid": 69,
 	"identifierStyle": "Free",
 	"toc": [],
 	"worldLayout": "Free",
@@ -185,6 +185,134 @@
 					"allowedRefs": "OnlySame",
 					"allowedRefTags": [],
 					"tilesetUid": null
+				},
+				{
+					"identifier": "Up",
+					"doc": null,
+					"__type": "EntityRef",
+					"uid": 62,
+					"type": "F_EntityRef",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "RefLinkBetweenCenters",
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "CurvedArrow",
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": false,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "Down",
+					"doc": null,
+					"__type": "EntityRef",
+					"uid": 68,
+					"type": "F_EntityRef",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "RefLinkBetweenCenters",
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "CurvedArrow",
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": false,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "Left",
+					"doc": null,
+					"__type": "EntityRef",
+					"uid": 67,
+					"type": "F_EntityRef",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "RefLinkBetweenCenters",
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "CurvedArrow",
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": false,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "Right",
+					"doc": null,
+					"__type": "EntityRef",
+					"uid": 66,
+					"type": "F_EntityRef",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "RefLinkBetweenCenters",
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "CurvedArrow",
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": false,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
 				}
 			]
 		},
@@ -355,7 +483,7 @@
 								"entityIid": "156dc000-c640-11ed-9e5f-753ab21eb918",
 								"layerIid": "268b0950-c640-11ed-9e5f-c1250afef015",
 								"levelIid": "fe9d2611-c640-11ed-9e5f-19a8eab9d53e",
-								"worldIid": "fe9d2610-c640-11ed-9e5f-cf2b9249a2f9"
+								"worldIid": "314c8130-c640-11ed-a60c-7175aa06a382"
 							}, "__type": "EntityRef", "__tile": null, "defUid": 60, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["156dc000-c640-11ed-9e5f-753ab21eb918"]
@@ -373,10 +501,24 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [112,48],
-							"fieldInstances": [{ "__identifier": "Text", "__value": "Start", "__type": "String", "__tile": null, "defUid": 17, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Start"]
-							}] }]
+							"fieldInstances": [
+								{ "__identifier": "Text", "__value": "Start", "__type": "String", "__tile": null, "defUid": 17, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Start"]
+								}] },
+								{ "__identifier": "Up", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 62, "realEditorValues": [] },
+								{ "__identifier": "Down", "__value": {
+									"entityIid": "37b69b00-c640-11ed-9e5f-a19a9f04f446",
+									"layerIid": "268b0950-c640-11ed-9e5f-c1250afef015",
+									"levelIid": "fe9d2611-c640-11ed-9e5f-19a8eab9d53e",
+									"worldIid": "314c8130-c640-11ed-a60c-7175aa06a382"
+								}, "__type": "EntityRef", "__tile": null, "defUid": 68, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["37b69b00-c640-11ed-9e5f-a19a9f04f446"]
+								}] },
+								{ "__identifier": "Left", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 67, "realEditorValues": [] },
+								{ "__identifier": "Right", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 66, "realEditorValues": [] }
+							]
 						},
 						{
 							"__identifier": "MenuItem",
@@ -390,10 +532,32 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [112,96],
-							"fieldInstances": [{ "__identifier": "Text", "__value": "Options", "__type": "String", "__tile": null, "defUid": 17, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Options"]
-							}] }]
+							"fieldInstances": [
+								{ "__identifier": "Text", "__value": "Options", "__type": "String", "__tile": null, "defUid": 17, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Options"]
+								}] },
+								{ "__identifier": "Up", "__value": {
+									"entityIid": "156dc000-c640-11ed-9e5f-753ab21eb918",
+									"layerIid": "268b0950-c640-11ed-9e5f-c1250afef015",
+									"levelIid": "fe9d2611-c640-11ed-9e5f-19a8eab9d53e",
+									"worldIid": "314c8130-c640-11ed-a60c-7175aa06a382"
+								}, "__type": "EntityRef", "__tile": null, "defUid": 62, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["156dc000-c640-11ed-9e5f-753ab21eb918"]
+								}] },
+								{ "__identifier": "Down", "__value": {
+									"entityIid": "38be4700-c640-11ed-9e5f-5107d5831c82",
+									"layerIid": "268b0950-c640-11ed-9e5f-c1250afef015",
+									"levelIid": "fe9d2611-c640-11ed-9e5f-19a8eab9d53e",
+									"worldIid": "314c8130-c640-11ed-a60c-7175aa06a382"
+								}, "__type": "EntityRef", "__tile": null, "defUid": 68, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["38be4700-c640-11ed-9e5f-5107d5831c82"]
+								}] },
+								{ "__identifier": "Left", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 67, "realEditorValues": [] },
+								{ "__identifier": "Right", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 66, "realEditorValues": [] }
+							]
 						},
 						{
 							"__identifier": "MenuItem",
@@ -407,10 +571,32 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [112,144],
-							"fieldInstances": [{ "__identifier": "Text", "__value": "Credits", "__type": "String", "__tile": null, "defUid": 17, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Credits"]
-							}] }]
+							"fieldInstances": [
+								{ "__identifier": "Text", "__value": "Credits", "__type": "String", "__tile": null, "defUid": 17, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Credits"]
+								}] },
+								{ "__identifier": "Up", "__value": {
+									"entityIid": "37b69b00-c640-11ed-9e5f-a19a9f04f446",
+									"layerIid": "268b0950-c640-11ed-9e5f-c1250afef015",
+									"levelIid": "fe9d2611-c640-11ed-9e5f-19a8eab9d53e",
+									"worldIid": "314c8130-c640-11ed-a60c-7175aa06a382"
+								}, "__type": "EntityRef", "__tile": null, "defUid": 62, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["37b69b00-c640-11ed-9e5f-a19a9f04f446"]
+								}] },
+								{ "__identifier": "Down", "__value": {
+									"entityIid": "45418e10-c640-11ed-9e5f-4d9a2b0d56c7",
+									"layerIid": "268b0950-c640-11ed-9e5f-c1250afef015",
+									"levelIid": "fe9d2611-c640-11ed-9e5f-19a8eab9d53e",
+									"worldIid": "314c8130-c640-11ed-a60c-7175aa06a382"
+								}, "__type": "EntityRef", "__tile": null, "defUid": 68, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["45418e10-c640-11ed-9e5f-4d9a2b0d56c7"]
+								}] },
+								{ "__identifier": "Left", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 67, "realEditorValues": [] },
+								{ "__identifier": "Right", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 66, "realEditorValues": [] }
+							]
 						},
 						{
 							"__identifier": "MenuItem",
@@ -424,10 +610,24 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [112,192],
-							"fieldInstances": [{ "__identifier": "Text", "__value": "Quit", "__type": "String", "__tile": null, "defUid": 17, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Quit"]
-							}] }]
+							"fieldInstances": [
+								{ "__identifier": "Text", "__value": "Quit", "__type": "String", "__tile": null, "defUid": 17, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Quit"]
+								}] },
+								{ "__identifier": "Up", "__value": {
+									"entityIid": "38be4700-c640-11ed-9e5f-5107d5831c82",
+									"layerIid": "268b0950-c640-11ed-9e5f-c1250afef015",
+									"levelIid": "fe9d2611-c640-11ed-9e5f-19a8eab9d53e",
+									"worldIid": "314c8130-c640-11ed-a60c-7175aa06a382"
+								}, "__type": "EntityRef", "__tile": null, "defUid": 62, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["38be4700-c640-11ed-9e5f-5107d5831c82"]
+								}] },
+								{ "__identifier": "Down", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 68, "realEditorValues": [] },
+								{ "__identifier": "Left", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 67, "realEditorValues": [] },
+								{ "__identifier": "Right", "__value": null, "__type": "EntityRef", "__tile": null, "defUid": 66, "realEditorValues": [] }
+							]
 						}
 					]
 				},

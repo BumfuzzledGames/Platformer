@@ -20,6 +20,7 @@
 **********************************************************/
 
 #include "menu.h"
+#include "../keyboard.h"
 #include "../ldtk.h"
 #include "../object.h"
 #include "../object_pool.h"
@@ -32,7 +33,20 @@
 
 static Screen screen;
 static ObjectPool pool;
-static MenuItem **start_item;
+static MenuItem **current_item;
+
+static void
+go_to_menu_item
+(
+    MenuItem **next_item
+) {
+    (*current_item)->selected = SDL_FALSE;
+    (*current_item)->Text.color = (SDL_Color){ 255, 255, 255, 255 };
+    current_item = next_item;
+    (*current_item)->selected = SDL_TRUE;
+    (*current_item)->Text.color = (SDL_Color){ 0, 255, 255, 255 };
+}
+
 
 static int
 entity_callback
@@ -42,7 +56,7 @@ entity_callback
     switch(entity->type)
     {
     case LDTK_ENTITY_MenuStart:
-        start_item = (MenuItem**)
+        current_item = (MenuItem**)
             &entity
                 ->fields[LDTK_ENTITY_MenuStart_FIELD_MenuStart]
                 .value
@@ -60,37 +74,56 @@ menu_screen
     LDtkLevel *menu_level
 )
 {
+    current_item = NULL;
     new_object_pool(&pool, POOL_SIZE);
-    new_screen_objects(
+    new_objects_from_level(
         &pool,
         menu_level,
         NULL,
         entity_callback
     );
+
+    if(current_item == NULL)
+    {
+        SDL_Log("%s Menu has no start item!", __func__);
+        return NULL;
+    }
+    go_to_menu_item(current_item);
     return &screen;
 }
 
 static int
 update
 (
-    SCREEN_UPDATE_ARGS
+    UPDATE_ARGS
 ) {
-    (void)delta_time;
+    update_objects(&pool, UPDATE_ARG_NAMES);
+
+    if(was_key_just_pressed(SDLK_UP) && (*current_item)->up)
+    {
+        go_to_menu_item((*current_item)->up);
+    }
+    if(was_key_just_pressed(SDLK_DOWN) && (*current_item)->down)
+    {
+        go_to_menu_item((*current_item)->down);
+    }
+    if(was_key_just_pressed(SDLK_LEFT) && (*current_item)->left)
+    {
+        go_to_menu_item((*current_item)->left);
+    }
+    if(was_key_just_pressed(SDLK_RIGHT) && (*current_item)->right)
+    {
+        go_to_menu_item((*current_item)->right);
+    }
     return 1;
 }
 
 static void
 render
 (
-    SCREEN_RENDER_ARGS
+    RENDER_ARGS
 ) {
-    for (
-        Object *obj = (Object*)pool.memory;
-        obj < (Object*)(pool.memory + pool.tail);
-        obj = (Object*)((Uint8*)obj + obj->size)
-    ) {
-        if(obj->type->render) obj->type->render(obj, renderer);
-    }
+    render_objects(&pool, RENDER_ARG_NAMES);
 }
 
 static Screen screen =

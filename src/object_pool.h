@@ -22,13 +22,25 @@
 #ifndef PLATFORMER_OBJECT_POOL_H
 #define PLATFORMER_OBJECT_POOL_H
 
+#include "type.h"
 #include "SDL.h"
+
+typedef struct Object Object;
+typedef struct ObjectPool ObjectPool;
+typedef struct LDtkLevel LDtkLevel;
+typedef struct LDtkLayer LDtkLayer;
+typedef struct LDtkEntity LDtkEntity;
 
 // How do I know that value of this for various platforms?
 #define OBJECT_POOL_ALIGN 16
 
-typedef struct Object Object;
-typedef struct ObjectPool ObjectPool;
+#define FOREACH_OBJECT_IN_POOL(POOL, OBJ)                   \
+    for                                                     \
+    (                                                       \
+        Object *OBJ = (Object*)POOL->memory;                \
+        OBJ < (Object*)(POOL->memory + POOL->tail);         \
+        OBJ = (Object*)((Uint8*)OBJ + OBJ->size)            \
+    )
 
 struct ObjectPool
 {
@@ -44,11 +56,35 @@ new_object_pool
     size_t size
 );
 
-Object * 
+Object *
 new_object
 (
     ObjectPool *this,
-    size_t object_size
+    size_t object_size,
+    size_t size_override,
+    size_t *out_size
+);
+
+void
+new_objects_from_level
+(
+    ObjectPool *this,
+    LDtkLevel *level,
+    int (*layer_callback)(LDtkLayer *layer),
+    int (*entity_callback)(LDtkEntity *entity)
+);
+
+void
+update_objects
+(
+    ObjectPool *this,
+    UPDATE_ARGS
+);
+
+void render_objects
+(
+    ObjectPool *this,
+    RENDER_ARGS
 );
 
 #endif // PLATFORMER_OBJECT_POOL_H

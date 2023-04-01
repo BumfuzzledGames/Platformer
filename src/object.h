@@ -22,7 +22,8 @@
 #ifndef PLATFORMER_OBJECT_H
 #define PLATFORMER_OBJECT_H
 
-#include "object_header.h"
+#include "SDL.h"
+#include "type.h"
 
 typedef struct Object Object;
 typedef struct ObjectPool ObjectPool;
@@ -30,11 +31,14 @@ typedef struct LDtkEntity LDtkEntity;
 
 struct Object
 {
-    OBJECT_HEADER
+    const Type *type;
+    size_t size;
+    SDL_bool enabled;
+    LDtkEntity *entity;
 };
 
 Object *
-spawn_object_from_entity
+new_object_from_entity
 (
     ObjectPool *object_pool,
     LDtkEntity *entity

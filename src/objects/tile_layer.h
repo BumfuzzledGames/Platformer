@@ -21,7 +21,7 @@
 #ifndef PLATFORMER_OBJECTS_TILE_LAYER_H
 #define PLATFORMER_OBJECTS_TILE_LAYER_H
 
-#include "../object_header.h"
+#include "../object.h"
 #include "SDL.h"
 
 typedef struct ObjectPool ObjectPool;
@@ -32,7 +32,7 @@ extern const Type TileLayer_type;
 
 struct TileLayer
 {
-    OBJECT_HEADER
+    Object Object;
     LDtkLayer *ldtk_layer;
 };
 

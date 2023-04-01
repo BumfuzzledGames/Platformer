@@ -34,46 +34,55 @@ new_from_entity
     ObjectPool *object_pool,
     LDtkEntity *entity
 ) {
-    MenuItem *this = (MenuItem*)new_object(object_pool, sizeof(MenuItem));
-    *this = (MenuItem)
-    {
-        .type = &MenuItem_type,
-        .size = sizeof(MenuItem),
-        .enabled = SDL_TRUE,
-        .font = &data_BasicHandwriting_fnt,
-        .area =
+    // Create the Text object
+    MenuItem *this = (MenuItem*)new_text
+    (
+        object_pool,
+        sizeof(MenuItem),
+        &data_BasicHandwriting_fnt,
+        &(SDL_Color){ 255, 255, 255, 255 },
+        &(SDL_Rect)
         {
             .x = entity->px.x,
             .y = entity->px.y,
             .w = entity->width,
             .h = entity->height,
         },
-        .text = entity->fields[LDTK_ENTITY_MenuItem_FIELD_Text].value.strings[0],
-    };
-    return (Object*)this;
-}
-
-static void
-render
-(
-    void *this_
-    RENDER_ARGS
-) {
-    MenuItem *this = this_;
-    draw_text
-    (
-        renderer,
-        this->font,
-        this->text,
-        &this->area,
-        DRAW_TEXT_HCENTER | DRAW_TEXT_VCENTER
+        entity->fields[LDTK_ENTITY_MenuItem_FIELD_Text].value.strings[0],
+        DRAW_TEXT_CENTER
     );
-    SDL_RenderDrawRect(renderer, &this->area);
+    if(this == NULL)
+    {
+        SDL_Log("%s Failed to create MenuItem", __func__);
+        return NULL;
+    }
+
+    // Make it a MenuItem object
+    this->Text.Object.type = &MenuItem_type;
+    this->selected = SDL_FALSE;
+    if(entity->fields[LDTK_ENTITY_MenuItem_FIELD_Up].value.entity_refs[0])
+    {
+        this->up = (MenuItem**)&entity->fields[LDTK_ENTITY_MenuItem_FIELD_Up].value.entity_refs[0]->user;
+    }
+    if(entity->fields[LDTK_ENTITY_MenuItem_FIELD_Down].value.entity_refs[0])
+    {
+        this->down = (MenuItem**)&entity->fields[LDTK_ENTITY_MenuItem_FIELD_Down].value.entity_refs[0]->user;
+    }
+    if(entity->fields[LDTK_ENTITY_MenuItem_FIELD_Left].value.entity_refs[0])
+    {
+        this->left = (MenuItem**)&entity->fields[LDTK_ENTITY_MenuItem_FIELD_Left].value.entity_refs[0]->user;
+    }
+    if(entity->fields[LDTK_ENTITY_MenuItem_FIELD_Right].value.entity_refs[0])
+    {
+        this->right = (MenuItem**)&entity->fields[LDTK_ENTITY_MenuItem_FIELD_Right].value.entity_refs[0]->user;
+    }
+
+    return &this->Text.Object;
 }
 
 const Type MenuItem_type =
 {
     .name = "MenuItem",
+    .parent = &Text_type,
     .new_from_entity = new_from_entity,
-    .render = render,
 };
